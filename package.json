@@ -1,0 +1,19 @@
+{
+  "name": "gov-mob",
+  "version": "0.0.1",
+  "description": "discord bot for the gang",
+  "license": "MIT",
+  "author": "Zord",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/index.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "discord.js": "^14.20.0"
+  }
+}
