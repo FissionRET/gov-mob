@@ -1,0 +1,7 @@
+{
+  "bot": {
+    "codename": "YourBotName",
+    "client_id": "<YOUR_CLIENT_ID_HERE>",
+    "token": "<YOUR_TOKEN_HERE>"
+  }
+}

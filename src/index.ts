@@ -1,8 +1,8 @@
 import { createRequire } from "node:module";
+import { Logger } from "./services/Logger";
+// import { Logger } from "./services";
 const require = createRequire(import.meta.url);
 
 let config = require("./config/config.json");
 
-// import config from "./config/config.json" assert { type: "json" };
-
-console.log(config);
+Logger.info("Starting bot...");
