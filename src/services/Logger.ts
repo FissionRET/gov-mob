@@ -1,83 +1,50 @@
-// import pino from "pino";
-
-// const Logger = pino({
-//   level: process.env.NODE_ENV === "production" ? "info" : "debug", // Set log level based on environment
-//   transport: {
-//     targets: [
-//       {
-//         target: "pino-pretty", // Use pino-pretty for development
-//         options: {
-//           colorize: true,
-//           ignore: "pid,hostname", // Ignore these fields for cleaner output in development
-//         },
-//         level: "debug", // Apply pino-pretty only for debug level and above
-//       },
-//       {
-//         target: "./Transport.js", // Use file transport for production
-//         options: {
-//           destination: "dist/logs/app.log", // Log to a file in production
-
-//         },
-//         level: "info", // Apply file transport only for info level and above
-//       },
-//     ],
-//   },
-// });
-
-// export default Logger;
-
-// import pino from "pino";
-
-import pino from "pino";
-import { Writable } from "stream";
 import fs from "node:fs";
 import path from "node:path";
+import pino from "pino";
 
-class Logger {
+interface LoggerOptions {
+  logdir?: string;
+  logID?: string;
+}
+
+/**
+ * Logger class
+ * Singleton
+ * */
+export class Logger {
   private static instance: Logger;
   private logger: pino.Logger;
 
   private logFilePath = "";
   private logdir = "";
 
-  private constructor({
-    logdir = "logs/",
-    logID = "",
-  }: {
-    logdir: string;
-    logID: string;
-  }) {
-    this.logdir = logdir;
+  /**
+   * Private constructor to enforce singleton pattern.
+   * Initializes Pino logger with console and file transports.
+   *
+   * @param args Optional configuration options for the logger.
+   * @param args.logdir - directory to save logs
+   * @param args.logID - log ID
+   * @returns Logger instance
+   */
+  private constructor(args?: LoggerOptions) {
+    // Default logdir is './logs' (relative to current working directory).
+    // Default logID is an empty string.
+    const options: LoggerOptions = { logdir: "logs/", logID: "", ...args };
+    this.logdir = options.logdir;
+
+    // Construct the full log file path.
+    // If logID is provided, filename will be 'server-[logID].log', otherwise 'app.log'.
     this.logFilePath = path.join(
-      logdir,
-      `${logID.length > 0 ? `server-${logID}` : "app"}.log`
+      options.logdir,
+      `${options.logID.length > 0 ? `server-${options.logID}` : "app"}.log`
     );
+
+    // Ensure the log directory exists synchronously.
+    // This happens before Pino attempts to open the file stream.
     fs.mkdirSync(path.dirname(this.logFilePath), { recursive: true });
 
-    // const fileStream = new Writable({
-    //   write: (chunk, _encoding, callback) => {
-    //     try {
-    //       const log = JSON.parse(chunk.toString());
-    //       fs.appendFileSync(this.logFilePath, this.formatLogLine(log));
-    //     } catch (e) {
-    //       fs.appendFileSync(this.logFilePath, chunk.toString());
-    //     }
-    //     callback();
-    //   },
-    // });
-
-    // const fileStream = new Writable({
-    //   write(chunk, _enc, cb) {
-    //     try {
-    //       const log = JSON.parse(chunk.toString());
-    //       fs.appendFileSync(this.logFilePath, formatLogLine(log));
-    //     } catch (e) {
-    //       fs.appendFileSync(logFilePath, chunk.toString());
-    //     }
-    //     cb();
-    //   },
-    // });
-
+    // Initialize the Pino logger.
     this.logger = pino(
       {
         level: process.env.NODE_ENV === "production" ? "info" : "debug",
@@ -89,13 +56,13 @@ class Logger {
             options: {
               colorize: true,
               ignore: "pid,hostname",
-              translateTime: "yyyy-mm-dd HH:MM:ss",
+              translateTime: "SYS:yyyy-mm-dd HH:MM:ss",
             },
           }),
         },
         {
           stream: pino.transport({
-            target: "./Transport.js",
+            target: "pino/file",
             options: {
               destination: this.logFilePath,
             },
@@ -122,7 +89,7 @@ class Logger {
     return `[${time}] ${level}: ${msg}\n`;
   }
 
-  public static getInstance(options = { logdir: "logs/", logID: "" }): Logger {
+  public static getInstance(options?: LoggerOptions): Logger {
     if (!Logger.instance) {
       Logger.instance = new Logger(options);
     }
@@ -145,4 +112,3 @@ class Logger {
   }
 }
 
-export default Logger;

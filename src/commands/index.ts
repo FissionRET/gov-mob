@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, Message } from "discord.js";
-import ping from "./ping";
+import ping from "./ping.js";
 
 export const commands = [ping];
 

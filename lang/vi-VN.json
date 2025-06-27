@@ -1,0 +1,7 @@
+{
+  "text": {
+    "cmd_error": "Có lỗi không xác định, hãy liên hệ hỗ trợ nếu cần",
+    "ping": "Còn khoảng {{ms}}ms cho đến lúc tay tao va chạm vào mặt mày",
+    "server_join": "Anh đã đến với các cưng rồi đây, {{name}} - {{version}}"
+  }
+}

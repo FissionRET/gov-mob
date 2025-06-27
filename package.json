@@ -4,21 +4,26 @@
   "description": "discord bot for the gang",
   "license": "MIT",
   "author": "Zord",
-  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copy-assets": "ncp src/config dist/config/",
-    "start": "tsc && npm run copy-assets && node dist/index.js"
+    "start": "tsc && node  --enable-source-maps dist/index.js",
+    "reg-slash": "tsc && node --enable-source-maps dist/deploy-cmd.js",
+    "dev": "nodemon"
   },
   "devDependencies": {
-    "@types/pino": "^7.0.4",
+    "@types/node": "^24.0.4",
     "ncp": "^2.0.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "@discordjs/rest": "^2.5.1",
     "discord.js": "^14.20.0",
+    "i18next": "^25.2.1",
+    "i18next-fs-backend": "^2.6.0",
     "pino": "^9.7.0",
     "pino-pretty": "^13.0.0"
   }

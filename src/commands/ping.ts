@@ -1,5 +1,4 @@
-import { Command } from "commands";
-import { ChatInputCommandInteraction, Message } from "discord.js";
+import { Command } from "./index.js";
 
 const ping: Command = {
   name: "ping",

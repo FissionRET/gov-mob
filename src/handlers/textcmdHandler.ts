@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { commands } from "../commands";
+import { commands } from "../commands/index.js";
 
 const prefix = "!";
 

@@ -1,0 +1,7 @@
+{
+  "text": {
+    "cmd_error": "Something went wrong, please try again later",
+    "ping": "It's about {{ms}}ms until i hit your face",
+    "server_join": "It's good to be here with you guys, im {{name}} - {{version}}"
+  }
+}

@@ -1,14 +1,13 @@
-import { promises } from "node:dns";
-import Logger from "./services/Logger.js";
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-let config = require("./config/config.json");
+import { Config, Logger } from "./services";
 
 const logger = Logger.getInstance();
-console.log(config.bot);
+console.log(Config.bot);
 
 async function start(): Promise<void> {
   logger.info("Bot is warming up...");
-  
 }
+
+start().catch((err) => {
+  logger.error(err);
+  process.exit(1);
+});
